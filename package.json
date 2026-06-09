@@ -1,19 +1,13 @@
 {
   "name": "carbon-footprint-tracker",
   "version": "1.0.0",
-  "description": "A conversational Node.js carbon footprint tracker — Hack2Skill PromptWars Challenge 3",
+  "description": "Carbon Footprint Tracker — Hack2Skill PromptWars Challenge 3",
   "main": "index.js",
   "scripts": {
     "start": "node index.js",
     "test": "jest"
   },
-  "keywords": [
-    "carbon",
-    "footprint",
-    "tracker",
-    "emissions",
-    "sustainability"
-  ],
+  "keywords": ["carbon", "footprint", "emissions", "sustainability"],
   "author": "Dynamic Assistant",
   "license": "MIT",
   "devDependencies": {

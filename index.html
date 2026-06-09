@@ -4,47 +4,26 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="Content-Security-Policy"
+        content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline' https://cdn.tailwindcss.com https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; connect-src 'none';">
   <meta name="description" content="Calculate your daily carbon footprint and receive personalised reduction strategies — Hack2Skill PromptWars Challenge 3.">
   <title>EcoAssistant AI — Carbon Footprint Tracker | Hack2Skill</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com">
-  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script defer src="app.js"></script>
   <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-
-    :root {
-      --bg:        #0d1117;
-      --surface:   #161b22;
-      --border:    #30363d;
-      --text:      #e6edf3;
-      --muted:     #8b949e;
-      --emerald:   #3fb950;
-      --emerald-d: #238636;
-      --emerald-bg:#0d2818;
-      --amber:     #d29922;
-      --focus-ring:0 0 0 3px rgba(63,185,80,.5);
+    /* Focus ring for keyboard navigation */
+    :focus-visible {
+      outline: 3px solid #3fb950;
+      outline-offset: 2px;
     }
-
-    body {
-      font-family: 'Inter', system-ui, sans-serif;
-      background: var(--bg);
-      color: var(--text);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 1.5rem;
-      line-height: 1.6;
-    }
-
-    /* ── Skip link for keyboard users ── */
+    /* Skip link */
     .skip-link {
       position: absolute;
       top: -100%;
       left: 1rem;
-      background: var(--emerald);
+      background: #3fb950;
       color: #000;
-      padding: .4rem .8rem;
+      padding: .4rem .9rem;
       border-radius: 4px;
       font-weight: 700;
       font-size: .875rem;
@@ -52,302 +31,125 @@
       z-index: 9999;
     }
     .skip-link:focus { top: 1rem; }
-
-    /* ── Layout ── */
-    .card {
-      width: 100%;
-      max-width: 560px;
-      background: var(--surface);
-      border: 1px solid var(--border);
-      border-radius: 16px;
-      padding: 2rem;
-      box-shadow: 0 8px 32px rgba(0,0,0,.4);
-    }
-
-    /* ── Header ── */
-    .site-header {
-      display: flex;
-      align-items: center;
-      gap: .75rem;
-      margin-bottom: 1rem;
-    }
-    .site-header .icon { font-size: 2rem; }
-    .site-header h1 {
-      font-size: 1.4rem;
-      font-weight: 800;
-      color: var(--emerald);
-    }
-    .site-header p {
-      font-size: .75rem;
-      color: var(--muted);
-    }
-
-    /* ── Description ── */
-    .intro { font-size: .875rem; color: #c9d1d9; margin-bottom: 1.5rem; }
-
-    /* ── Sections ── */
-    .form-section { margin-bottom: 1.25rem; }
-    .form-section legend,
-    .form-section label {
-      display: block;
-      font-size: .875rem;
-      font-weight: 600;
-      color: var(--text);
-      margin-bottom: .6rem;
-    }
-
-    /* ── Transport buttons ── */
-    .transport-grid {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: .5rem;
-    }
-    .transport-btn {
-      background: var(--bg);
-      border: 1px solid var(--border);
-      color: var(--text);
-      border-radius: 10px;
-      padding: .7rem .5rem;
-      font-size: .8rem;
-      font-weight: 600;
-      cursor: pointer;
-      transition: border-color .15s, background .15s, color .15s;
-      text-align: center;
-      font-family: inherit;
-    }
-    .transport-btn:hover {
-      border-color: var(--emerald);
-      background: var(--emerald-bg);
-    }
-    .transport-btn:focus-visible {
-      outline: none;
-      box-shadow: var(--focus-ring);
-    }
-    .transport-btn[aria-pressed="true"] {
-      border: 2px solid var(--emerald);
-      background: var(--emerald-bg);
-      color: var(--emerald);
-    }
-
-    /* ── Number input ── */
-    .text-input {
-      width: 100%;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: .6rem 1rem;
-      font-size: .875rem;
-      color: var(--text);
-      font-family: inherit;
-      transition: border-color .15s;
-    }
-    .text-input::placeholder { color: var(--muted); }
-    .text-input:focus {
-      outline: none;
-      border-color: var(--emerald);
-      box-shadow: var(--focus-ring);
-    }
-    .input-error {
-      color: #f85149;
-      font-size: .78rem;
-      margin-top: .35rem;
-      display: none;
-    }
-
-    /* ── Submit button ── */
-    .submit-btn {
-      width: 100%;
-      background: var(--emerald-d);
-      color: #fff;
-      border: none;
-      border-radius: 10px;
-      padding: .85rem 1rem;
-      font-size: .9rem;
-      font-weight: 700;
-      cursor: pointer;
-      font-family: inherit;
-      transition: background .15s;
-    }
-    .submit-btn:hover { background: var(--emerald); color: #000; }
-    .submit-btn:focus-visible {
-      outline: none;
-      box-shadow: var(--focus-ring);
-    }
-
-    /* ── Results ── */
-    .results-section { display: none; margin-top: 1.5rem; border-top: 1px solid var(--border); padding-top: 1.5rem; }
-    .results-section.visible { display: block; }
-
-    .emission-box {
-      background: var(--bg);
-      border: 1px solid rgba(63,185,80,.35);
-      border-radius: 12px;
-      padding: 1rem 1.25rem;
-      margin-bottom: 1rem;
-    }
-    .emission-label {
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--emerald);
-    }
-    .emission-value {
-      font-size: 1.75rem;
-      font-weight: 800;
-      color: #fff;
-      margin-top: .2rem;
-    }
-
-    .insights-heading {
-      font-size: .7rem;
-      font-weight: 700;
-      letter-spacing: .08em;
-      text-transform: uppercase;
-      color: var(--amber);
-      margin-bottom: .5rem;
-    }
-    #insights-list {
-      list-style: disc;
-      padding-left: 1.25rem;
-      font-size: .82rem;
-      color: #c9d1d9;
-      background: var(--bg);
-      border: 1px solid var(--border);
-      border-radius: 10px;
-      padding: .85rem 1rem .85rem 1.75rem;
-    }
-    #insights-list li + li { margin-top: .4rem; }
-
-    /* ── Footer ── */
-    .site-footer {
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      margin-top: 1.75rem;
-      padding-top: 1rem;
-      border-top: 1px solid var(--border);
-      font-size: .75rem;
-      color: var(--muted);
-      flex-wrap: wrap;
-      gap: .4rem;
-    }
-    .site-footer a {
-      color: var(--emerald);
-      text-decoration: none;
-      font-weight: 600;
-    }
-    .site-footer a:hover { text-decoration: underline; }
-    .site-footer a:focus-visible { outline: 2px solid var(--emerald); border-radius: 2px; }
-
-    /* ── Live region for screen readers ── */
-    .sr-only {
-      position: absolute;
-      width: 1px; height: 1px;
-      padding: 0; margin: -1px;
-      overflow: hidden;
-      clip: rect(0,0,0,0);
-      white-space: nowrap;
-      border: 0;
-    }
+    /* Transition for result box */
+    #result-box { transition: opacity 0.3s ease; }
   </style>
 </head>
 
-<body>
-  <!-- Skip navigation for keyboard/screen-reader users -->
+<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-6">
+
+  <!-- Skip navigation for keyboard users -->
   <a class="skip-link" href="#main-content">Skip to main content</a>
 
-  <!-- Live region: announces result changes to screen readers -->
-  <div id="sr-announcer" role="status" aria-live="polite" aria-atomic="true" class="sr-only"></div>
+  <!-- Screen-reader live announcer -->
+  <div id="sr-announcer" role="status" aria-live="polite" aria-atomic="true"
+       class="sr-only absolute w-px h-px overflow-hidden"></div>
 
-  <div class="card" role="document">
+  <div class="max-w-xl w-full bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-8">
 
     <!-- ── Site Header ── -->
-    <header class="site-header" role="banner">
-      <span class="icon" aria-hidden="true">🌱</span>
-      <div>
-        <h1>EcoAssistant AI</h1>
-        <p>Hack2Skill PromptWars — Challenge 3</p>
+    <header role="banner">
+      <div class="flex items-center gap-3 mb-4">
+        <span class="text-3xl" aria-hidden="true">🌱</span>
+        <div>
+          <h1 class="text-2xl font-bold text-emerald-400">EcoAssistant AI</h1>
+          <p class="text-xs text-slate-400">Hack2Skill PromptWars — Challenge 3</p>
+        </div>
       </div>
-    </header>
-
-    <!-- ── Main Content ── -->
-    <main id="main-content">
-
-      <p class="intro">
+      <p class="text-sm text-slate-300 mb-6 leading-relaxed">
         Calculate your daily carbon metrics instantly. Select your primary transportation
         method and enter your daily distance to receive personalised emission metrics
         and context-aware reduction strategies.
       </p>
+    </header>
 
-      <!-- ── Input Form ── -->
-      <form id="footprint-form" novalidate aria-label="Carbon footprint calculator form" onsubmit="handleSubmit(event)">
+    <!-- ── Main Content ── -->
+    <main id="main-content" role="main">
 
-        <!-- Transport Method -->
-        <section class="form-section" aria-labelledby="transport-legend">
-          <fieldset style="border:none;padding:0;">
-            <legend id="transport-legend" style="font-size:.875rem;font-weight:600;color:var(--text);margin-bottom:.6rem;">
-              1. Select your primary commute method today:
-            </legend>
-            <div class="transport-grid" id="transport-selector" role="group" aria-label="Transport method selection">
-              <button type="button"
-                      id="btn-car"
-                      class="transport-btn"
-                      aria-pressed="false"
-                      aria-label="Car — high-emission transport"
-                      onclick="setTransport('car', 0.24)">
-                🚗 Car
-              </button>
-              <button type="button"
-                      id="btn-bus"
-                      class="transport-btn"
-                      aria-pressed="false"
-                      aria-label="Bus or Train — low-emission shared transport"
-                      onclick="setTransport('bus', 0.08)">
-                🚌 Bus / Train
-              </button>
-              <button type="button"
-                      id="btn-bike"
-                      class="transport-btn"
-                      aria-pressed="false"
-                      aria-label="Walk or Bike — zero-emission active transport"
-                      onclick="setTransport('bike', 0.00)">
-                🚲 Walk / Bike
-              </button>
-            </div>
-            <p id="transport-error" class="input-error" role="alert" aria-live="assertive">
-              Please select a transport method.
-            </p>
-          </fieldset>
+      <form id="footprint-form" novalidate aria-label="Carbon footprint calculator">
+
+        <!-- Transport Method — radiogroup -->
+        <section aria-labelledby="transport-legend" class="mb-6">
+          <p id="transport-legend" class="text-sm font-semibold text-slate-300 mb-3">
+            1. Select your primary commute method today:
+          </p>
+          <div id="transport-selector"
+               role="radiogroup"
+               aria-labelledby="transport-legend"
+               aria-required="true"
+               class="grid grid-cols-3 gap-2">
+
+            <button type="button"
+                    id="btn-car"
+                    role="radio"
+                    aria-checked="false"
+                    data-type="car"
+                    data-coeff="0.24"
+                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors"
+                    aria-label="Car — higher emission transport, 0.24 kg CO₂ per km">
+              🚗 Car
+            </button>
+
+            <button type="button"
+                    id="btn-bus"
+                    role="radio"
+                    aria-checked="false"
+                    data-type="bus"
+                    data-coeff="0.08"
+                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors"
+                    aria-label="Bus or Train — low-emission shared transport, 0.08 kg CO₂ per km">
+              🚌 Bus / Train
+            </button>
+
+            <button type="button"
+                    id="btn-bike"
+                    role="radio"
+                    aria-checked="false"
+                    data-type="bike"
+                    data-coeff="0.00"
+                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors"
+                    aria-label="Walk or Bike — zero-emission active transport, 0 kg CO₂ per km">
+              🚲 Walk / Bike
+            </button>
+
+          </div>
+          <p id="transport-error"
+             role="alert"
+             aria-live="assertive"
+             class="text-red-400 text-xs mt-2 hidden">
+            Please select a transport method.
+          </p>
         </section>
 
         <!-- Distance Input -->
-        <section class="form-section" aria-labelledby="distance-label">
-          <label id="distance-label" for="distance-input">
+        <section aria-labelledby="distance-label" class="mb-6">
+          <label id="distance-label" for="distance-input"
+                 class="block text-sm font-semibold text-slate-300 mb-2">
             2. Approximate daily distance traveled (in kilometers):
           </label>
-          <input
-            type="number"
-            id="distance-input"
-            name="distance"
-            class="text-input"
-            placeholder="e.g. 15"
-            min="0"
-            step="0.1"
-            aria-label="Daily distance in kilometers"
-            aria-describedby="distance-error"
-            aria-required="true"
-          >
-          <p id="distance-error" class="input-error" role="alert" aria-live="assertive">
+          <input type="number"
+                 id="distance-input"
+                 name="distance"
+                 placeholder="e.g. 15"
+                 min="0"
+                 step="0.1"
+                 aria-label="Daily commute distance in kilometers"
+                 aria-describedby="distance-error"
+                 aria-required="true"
+                 class="w-full bg-slate-900 border border-slate-700 rounded-lg py-2 px-4 text-sm text-slate-100 focus:border-emerald-500 transition-colors">
+          <p id="distance-error"
+             role="alert"
+             aria-live="assertive"
+             class="text-red-400 text-xs mt-2 hidden">
             Please enter a valid non-negative distance.
           </p>
         </section>
 
         <!-- Submit -->
-        <section class="form-section" aria-label="Form submission">
+        <section aria-label="Form submission" class="mb-2">
           <button type="submit"
                   id="calculate-btn"
-                  class="submit-btn"
+                  class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-lg text-sm transition-colors shadow-lg"
                   aria-label="Analyze footprint and generate personalised recommendations">
             Analyze Footprint &amp; Generate Recommendations
           </button>
@@ -357,23 +159,32 @@
 
       <!-- ── Results ── -->
       <section id="result-box"
-               class="results-section"
+               role="region"
                aria-label="Carbon footprint results"
                aria-live="polite"
-               role="region">
+               aria-atomic="false"
+               class="hidden mt-6 pt-6 border-t border-slate-700 space-y-4">
 
-        <div class="emission-box" role="group" aria-label="Total daily emission calculation">
-          <p class="emission-label" id="emission-result-label">Total Calculation</p>
-          <p class="emission-value" aria-labelledby="emission-result-label">
-            <span id="emissions-output" aria-live="polite">0.00</span>
-            <span aria-hidden="true"> kg CO₂e / day</span>
+        <div class="p-4 bg-slate-900 rounded-xl border border-emerald-500/30"
+             role="group"
+             aria-label="Total daily emission">
+          <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">
+            Total Calculation
+          </span>
+          <p class="text-2xl font-black text-white mt-1">
+            <span id="emissions-output">0.00</span>
+            <span aria-label="kilograms of CO2 equivalent per day"> kg CO₂e / day</span>
           </p>
         </div>
 
-        <div role="region" aria-label="Personalised AI insights">
-          <p class="insights-heading" id="insights-heading">Personalised AI Insights:</p>
-          <ul id="insights-list" aria-labelledby="insights-heading">
-            <!-- Dynamically injected -->
+        <div role="region" aria-labelledby="insights-heading">
+          <p id="insights-heading"
+             class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">
+            Personalised AI Insights:
+          </p>
+          <ul id="insights-list"
+              aria-labelledby="insights-heading"
+              class="text-xs text-slate-300 list-disc list-inside space-y-1 bg-slate-900 p-3 rounded-lg border border-slate-700">
           </ul>
         </div>
 
@@ -382,118 +193,22 @@
     </main>
 
     <!-- ── Site Footer ── -->
-    <footer class="site-footer" role="contentinfo">
+    <footer role="contentinfo"
+            class="mt-8 pt-6 border-t border-slate-700 flex justify-between items-center text-xs text-slate-400 flex-wrap gap-2">
       <span>
         Branch status:
-        <strong style="color:var(--emerald);">main (Single Branch)</strong>
+        <strong class="text-emerald-400">main (Single Branch)</strong>
       </span>
       <a href="https://github.com/TejaDegala07/h2schallenge2"
          target="_blank"
          rel="noopener noreferrer"
-         aria-label="View source code on GitHub (opens in new tab)">
+         aria-label="View source code on GitHub (opens in a new tab)"
+         class="text-emerald-400 hover:underline font-semibold">
         View Source GitHub →
       </a>
     </footer>
 
-  </div><!-- /.card -->
-
-  <!-- ── JavaScript ── -->
-  <script>
-    "use strict";
-
-    let currentCoeff = null;
-    let selectedType = "";
-
-    function setTransport(type, coeff) {
-      currentCoeff = coeff;
-      selectedType = type;
-
-      // Reset all aria-pressed states
-      ["car", "bus", "bike"].forEach(t => {
-        const btn = document.getElementById(`btn-${t}`);
-        btn.setAttribute("aria-pressed", "false");
-      });
-
-      // Mark selected button
-      const activeBtn = document.getElementById(`btn-${type}`);
-      activeBtn.setAttribute("aria-pressed", "true");
-
-      // Clear transport error
-      document.getElementById("transport-error").style.display = "none";
-    }
-
-    function handleSubmit(event) {
-      event.preventDefault();
-
-      const distanceInput = document.getElementById("distance-input");
-      const distance = parseFloat(distanceInput.value);
-
-      let valid = true;
-
-      // Validate transport selection
-      const transportErr = document.getElementById("transport-error");
-      if (currentCoeff === null) {
-        transportErr.style.display = "block";
-        valid = false;
-      } else {
-        transportErr.style.display = "none";
-      }
-
-      // Validate distance
-      const distanceErr = document.getElementById("distance-error");
-      if (distanceInput.value.trim() === "" || isNaN(distance) || distance < 0) {
-        distanceErr.style.display = "block";
-        distanceInput.setAttribute("aria-invalid", "true");
-        valid = false;
-      } else {
-        distanceErr.style.display = "none";
-        distanceInput.setAttribute("aria-invalid", "false");
-      }
-
-      if (!valid) return;
-
-      calculateFootprint(distance);
-    }
-
-    function calculateFootprint(distance) {
-      const totalEmissions = (distance * currentCoeff).toFixed(2);
-      document.getElementById("emissions-output").textContent = totalEmissions;
-
-      const insights = document.getElementById("insights-list");
-      insights.innerHTML = "";
-
-      const tips = buildInsights(selectedType, distance);
-      tips.forEach(tip => {
-        const li = document.createElement("li");
-        li.textContent = tip;
-        insights.appendChild(li);
-      });
-
-      // Show results section
-      const resultBox = document.getElementById("result-box");
-      resultBox.classList.add("visible");
-
-      // Announce result to screen readers
-      document.getElementById("sr-announcer").textContent =
-        `Results updated. Your daily carbon footprint is ${totalEmissions} kg CO₂ equivalent.`;
-    }
-
-    function buildInsights(type, distance) {
-      const list = [];
-      if (type === "car" && distance > 10) {
-        list.push("Your daily commute contributes a heavy carbon load. Consider switching to carpooling or a hybrid bus loop to cut emissions by roughly 60%.");
-        list.push("Smooth acceleration techniques can save up to 15% on fuel efficiency.");
-      } else if (type === "bus") {
-        list.push("Excellent — shared public transport saves approximately 68% more emissions than single-occupancy vehicles daily.");
-        list.push("Combine multi-stop errands into single linear pathways to reduce total trips.");
-      } else {
-        list.push("Perfect zero-emission profile! Your active transport completely eliminates commute atmospheric impact.");
-        list.push("Advocate for green pedestrian and cycling corridors in your urban neighbourhood.");
-      }
-      list.push("General tip: Offset your footprint by planting local flora or using smart home sockets to reduce standby energy draw.");
-      return list;
-    }
-  </script>
+  </div>
 
 </body>
 </html>
