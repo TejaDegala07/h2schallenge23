@@ -1,0 +1,26 @@
+{
+  "name": "carbon-footprint-tracker",
+  "version": "1.0.0",
+  "description": "A conversational Node.js carbon footprint tracker — Hack2Skill PromptWars Challenge 3",
+  "main": "index.js",
+  "scripts": {
+    "start": "node index.js",
+    "test": "jest"
+  },
+  "keywords": [
+    "carbon",
+    "footprint",
+    "tracker",
+    "emissions",
+    "sustainability"
+  ],
+  "author": "Dynamic Assistant",
+  "license": "MIT",
+  "devDependencies": {
+    "jest": "^29.7.0"
+  },
+  "jest": {
+    "testEnvironment": "node",
+    "verbose": true
+  }
+}
