@@ -5,18 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Calculate your daily carbon footprint and receive personalised reduction strategies — Hack2Skill PromptWars Challenge 3.">
-
-  <!-- CSP: locks down fetch/object/base/form; allows unsafe-inline styles required by Tailwind JIT runtime -->
-  <meta http-equiv="Content-Security-Policy"
-        content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com; style-src 'self' 'unsafe-inline'; img-src 'self' data:; object-src 'none'; base-uri 'self'; form-action 'self';">
-
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
   <title>EcoAssistant AI — Carbon Footprint Tracker | Hack2Skill</title>
 
-  <!-- Preconnect: resolves DNS and opens TCP/TLS to Tailwind CDN before the browser hits the script tag -->
   <link rel="preconnect" href="https://cdn.tailwindcss.com">
-
-  <!-- Synchronous load: Tailwind JIT must evaluate the DOM before first paint to apply utility classes.
-       Adding defer/async causes FOUC because JIT scans class attributes at parse time. -->
   <script src="https://cdn.tailwindcss.com"></script>
 
   <style>
@@ -72,10 +64,8 @@
 
   <div class="max-w-xl w-full bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-8">
 
-    <!-- <header> carries implicit role="banner" — no explicit role needed -->
     <header>
       <div class="flex items-center gap-3 mb-4">
-        <!-- aria-hidden: decorative emoji, not meaningful content for AT -->
         <span class="text-3xl" aria-hidden="true">🌱</span>
         <div>
           <h1 class="text-2xl font-bold text-emerald-400">EcoAssistant AI</h1>
@@ -89,7 +79,6 @@
       </p>
     </header>
 
-    <!-- <main> carries implicit role="main" — no explicit role needed -->
     <main id="main-content">
 
       <form id="footprint-form" novalidate aria-label="Carbon footprint calculator">
@@ -99,7 +88,6 @@
           <p id="transport-legend" class="text-sm font-semibold text-slate-300 mb-3">
             1. Select your primary commute method today:
           </p>
-          <!-- aria-required is not a valid ARIA 1.2 attribute for role="radiogroup" — omitted -->
           <div id="transport-selector"
                role="radiogroup"
                aria-labelledby="transport-legend"
@@ -111,9 +99,9 @@
                     aria-checked="false"
                     data-type="car"
                     data-coeff="0.24"
-                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors"
+                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     aria-label="Car — higher emission transport, 0.24 kg CO2 per km">
-              🚗 Car
+              <span aria-hidden="true">🚗</span> Car
             </button>
 
             <button type="button"
@@ -122,9 +110,9 @@
                     aria-checked="false"
                     data-type="bus"
                     data-coeff="0.08"
-                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors"
+                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     aria-label="Bus or Train — low-emission shared transport, 0.08 kg CO2 per km">
-              🚌 Bus / Train
+              <span aria-hidden="true">🚌</span> Bus / Train
             </button>
 
             <button type="button"
@@ -133,15 +121,15 @@
                     aria-checked="false"
                     data-type="bike"
                     data-coeff="0.00"
-                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors"
+                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
                     aria-label="Walk or Bike — zero-emission active transport, 0 kg CO2 per km">
-              🚲 Walk / Bike
+              <span aria-hidden="true">🚲</span> Walk / Bike
             </button>
 
           </div>
           <p id="transport-error"
              role="alert"
-             aria-live="assertive"
+             aria-live="polite"
              class="text-red-400 text-xs mt-2 hidden">
             Please select a transport method.
           </p>
@@ -149,9 +137,6 @@
 
         <!-- Distance Input -->
         <section aria-labelledby="distance-label" class="mb-6">
-          <!-- <label for="distance-input"> is the sole authoritative accessible name for this input.
-               No aria-label is added — dual accessible names cause aria-label to silently override
-               the visible label text for screen readers (aria-label wins per the ARIA spec). -->
           <label id="distance-label" for="distance-input"
                  class="block text-sm font-semibold text-slate-300 mb-2">
             2. Approximate daily distance traveled (in kilometers):
@@ -164,10 +149,10 @@
                  step="0.1"
                  aria-required="true"
                  aria-describedby="distance-error"
-                 class="w-full bg-slate-900 border border-slate-700 rounded-lg py-2 px-4 text-sm text-slate-100 focus:border-emerald-500 transition-colors">
+                 class="w-full bg-slate-900 border border-slate-700 rounded-lg py-2 px-4 text-sm text-slate-100 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 transition-colors outline-none">
           <p id="distance-error"
              role="alert"
-             aria-live="assertive"
+             aria-live="polite"
              class="text-red-400 text-xs mt-2 hidden">
             Please enter a valid non-negative distance.
           </p>
@@ -177,7 +162,7 @@
         <section aria-label="Form submission" class="mb-2">
           <button type="submit"
                   id="calculate-btn"
-                  class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-lg text-sm transition-colors shadow-lg"
+                  class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-lg text-sm transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-400"
                   aria-label="Analyze footprint and generate personalised recommendations">
             Analyze Footprint &amp; Generate Recommendations
           </button>
@@ -185,8 +170,6 @@
 
       </form>
 
-      <!-- Results: <section> with aria-label carries implicit role="region" — no explicit role needed.
-           aria-live="polite" ensures screen readers announce content updates. -->
       <section id="result-box"
                aria-label="Carbon footprint results"
                aria-live="polite"
@@ -205,7 +188,6 @@
           </p>
         </div>
 
-        <!-- Native <section> replaces <div role="region"> — semantic element over ARIA override -->
         <section aria-labelledby="insights-heading">
           <p id="insights-heading"
              class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">
@@ -221,24 +203,24 @@
 
     </main>
 
-    <!-- <footer> carries implicit role="contentinfo" — no explicit role needed -->
-    <footer class="mt-8 pt-6 border-t border-slate-700 flex justify-between items-center text-xs text-slate-400 flex-wrap gap-2">
-      <span>
-        Branch status:
-        <strong class="text-emerald-400">main (Single Branch)</strong>
-      </span>
-      <a href="https://github.com/TejaDegala07/h2schallenge2"
-         target="_blank"
-         rel="noopener noreferrer"
-         aria-label="View source code on GitHub (opens in a new tab)"
-         class="text-emerald-400 hover:underline font-semibold">
-        View Source GitHub →
-      </a>
+    <footer>
+      <div class="mt-8 pt-6 border-t border-slate-700 flex justify-between items-center text-xs text-slate-400 flex-wrap gap-2">
+        <span>
+          Branch status:
+          <strong class="text-emerald-400">main (Single Branch)</strong>
+        </span>
+        <a href="https://github.com/TejaDegala07/h2schallenge2"
+           target="_blank"
+           rel="noopener noreferrer"
+           aria-label="View source code on GitHub (opens in a new tab)"
+           class="text-emerald-400 hover:underline font-semibold">
+          View Source GitHub →
+        </a>
+      </div>
     </footer>
 
   </div>
 
-  <!-- defer: non-blocking load after HTML is parsed; placed at end of body for maximum efficiency -->
   <script defer src="app.js"></script>
 
 </body>
