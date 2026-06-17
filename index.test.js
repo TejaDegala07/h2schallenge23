@@ -168,9 +168,9 @@ describe("DOM Initialization and App Lifecycle", () => {
     document.body.innerHTML = `
       <form id="footprint-form">
         <div id="transport-selector">
-          <button type="button" id="btn-car" class="transport-btn border-slate-600 bg-slate-900" data-type="car" data-coeff="0.24" aria-checked="false"></button>
-          <button type="button" id="btn-bus" class="transport-btn border-slate-600 bg-slate-900" data-type="bus" data-coeff="0.08" aria-checked="false"></button>
-          <button type="button" id="btn-bike" class="transport-btn border-slate-600 bg-slate-900" data-type="bike" data-coeff="0.00" aria-checked="false"></button>
+          <button type="button" id="btn-car" class="transport-btn border-gray-600 bg-gray-900" data-type="car" data-coeff="0.24" aria-checked="false"></button>
+          <button type="button" id="btn-bus" class="transport-btn border-gray-600 bg-gray-900" data-type="bus" data-coeff="0.08" aria-checked="false"></button>
+          <button type="button" id="btn-bike" class="transport-btn border-gray-600 bg-gray-900" data-type="bike" data-coeff="0.00" aria-checked="false"></button>
         </div>
         <p id="transport-error" class=""></p>
         
@@ -202,7 +202,7 @@ describe("DOM Initialization and App Lifecycle", () => {
     carBtn.click();
     
     expect(carBtn.getAttribute("aria-checked")).toBe("true");
-    expect(carBtn.classList.contains("border-emerald-500")).toBe(true);
+    expect(carBtn.classList.contains("border-green-500")).toBe(true);
     expect(transportErr.classList.contains("hidden")).toBe(true);
   });
 

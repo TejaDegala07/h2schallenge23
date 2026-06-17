@@ -5,11 +5,10 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Calculate your daily carbon footprint and receive personalised reduction strategies — Hack2Skill PromptWars Challenge 3.">
-  <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://cdn.tailwindcss.com 'unsafe-inline'; style-src 'self' 'unsafe-inline';">
+  <meta http-equiv="Content-Security-Policy" content="default-src 'self' https://cdn.jsdelivr.net; style-src 'self' https://cdn.jsdelivr.net; script-src 'self'; type-must-match 'true';">
   <title>EcoAssistant AI — Carbon Footprint Tracker | Hack2Skill</title>
 
-  <link rel="preconnect" href="https://cdn.tailwindcss.com">
-  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
 
   <style>
     /* WCAG 2.1 AA — visible keyboard focus ring */
@@ -50,7 +49,7 @@
   </style>
 </head>
 
-<body class="bg-slate-900 text-slate-100 min-h-screen flex flex-col items-center justify-center p-6">
+<body class="bg-gray-900 text-gray-100 min-h-screen flex flex-col items-center justify-center p-6">
 
   <!-- Skip navigation for keyboard and screen-reader users -->
   <a class="skip-link" href="#main-content">Skip to main content</a>
@@ -62,17 +61,17 @@
        aria-atomic="true"
        class="sr-only"></div>
 
-  <div class="max-w-xl w-full bg-slate-800 rounded-2xl shadow-xl border border-slate-700 p-8">
+  <div class="max-w-xl w-full bg-gray-800 rounded-2xl shadow-xl border border-gray-700 p-8">
 
     <header>
       <div class="flex items-center gap-3 mb-4">
         <span class="text-3xl" aria-hidden="true">🌱</span>
         <div>
-          <h1 class="text-2xl font-bold text-emerald-400">EcoAssistant AI</h1>
-          <p class="text-xs text-slate-400">Hack2Skill PromptWars — Challenge 3</p>
+          <h1 class="text-2xl font-bold text-green-400">EcoAssistant AI</h1>
+          <p class="text-xs text-gray-400">Hack2Skill PromptWars — Challenge 3</p>
         </div>
       </div>
-      <p class="text-sm text-slate-300 mb-6 leading-relaxed">
+      <p class="text-sm text-gray-300 mb-6 leading-relaxed">
         Calculate your daily carbon metrics instantly. Select your primary transportation
         method and enter your daily distance to receive personalised emission metrics
         and context-aware reduction strategies.
@@ -85,7 +84,7 @@
 
         <!-- Transport Method -->
         <section aria-labelledby="transport-legend" class="mb-6">
-          <p id="transport-legend" class="text-sm font-semibold text-slate-300 mb-3">
+          <p id="transport-legend" class="text-sm font-semibold text-gray-300 mb-3">
             1. Select your primary commute method today:
           </p>
           <div id="transport-selector"
@@ -99,7 +98,7 @@
                     aria-checked="false"
                     data-type="car"
                     data-coeff="0.24"
-                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    class="transport-btn bg-gray-900 hover:bg-gray-700 border border-gray-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
                     aria-label="Car — higher emission transport, 0.24 kg CO2 per km">
               <span aria-hidden="true">🚗</span> Car
             </button>
@@ -110,7 +109,7 @@
                     aria-checked="false"
                     data-type="bus"
                     data-coeff="0.08"
-                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    class="transport-btn bg-gray-900 hover:bg-gray-700 border border-gray-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
                     aria-label="Bus or Train — low-emission shared transport, 0.08 kg CO2 per km">
               <span aria-hidden="true">🚌</span> Bus / Train
             </button>
@@ -121,7 +120,7 @@
                     aria-checked="false"
                     data-type="bike"
                     data-coeff="0.00"
-                    class="transport-btn bg-slate-900 hover:bg-slate-700 border border-slate-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-emerald-500"
+                    class="transport-btn bg-gray-900 hover:bg-gray-700 border border-gray-600 text-xs py-3 px-3 rounded-lg font-semibold text-center transition-colors focus:outline-none focus:ring-2 focus:ring-green-500"
                     aria-label="Walk or Bike — zero-emission active transport, 0 kg CO2 per km">
               <span aria-hidden="true">🚲</span> Walk / Bike
             </button>
@@ -138,7 +137,7 @@
         <!-- Distance Input -->
         <section aria-labelledby="distance-label" class="mb-6">
           <label id="distance-label" for="distance-input"
-                 class="block text-sm font-semibold text-slate-300 mb-2">
+                 class="block text-sm font-semibold text-gray-300 mb-2">
             2. Approximate daily distance traveled (in kilometers):
           </label>
           <input type="number"
@@ -149,7 +148,7 @@
                  step="0.1"
                  aria-required="true"
                  aria-describedby="distance-error"
-                 class="w-full bg-slate-900 border border-slate-700 rounded-lg py-2 px-4 text-sm text-slate-100 focus:border-emerald-500 focus:ring-2 focus:ring-emerald-500 transition-colors outline-none">
+                 class="w-full bg-gray-900 border border-gray-700 rounded-lg py-2 px-4 text-sm text-gray-100 focus:border-green-500 focus:ring-2 focus:ring-green-500 transition-colors outline-none">
           <p id="distance-error"
              role="alert"
              aria-live="polite"
@@ -162,7 +161,7 @@
         <section aria-label="Form submission" class="mb-2">
           <button type="submit"
                   id="calculate-btn"
-                  class="w-full bg-emerald-700 hover:bg-emerald-600 text-white font-bold py-3 px-4 rounded-lg text-sm transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-emerald-400"
+                  class="w-full bg-green-700 hover:bg-green-600 text-white font-bold py-3 px-4 rounded-lg text-sm transition-colors shadow-lg focus:outline-none focus:ring-2 focus:ring-green-400"
                   aria-label="Analyze footprint and generate personalised recommendations">
             Analyze Footprint &amp; Generate Recommendations
           </button>
@@ -174,12 +173,12 @@
                aria-label="Carbon footprint results"
                aria-live="polite"
                aria-atomic="false"
-               class="hidden mt-6 pt-6 border-t border-slate-700 space-y-4">
+               class="hidden mt-6 pt-6 border-t border-gray-700 space-y-4">
 
-        <div class="p-4 bg-slate-900 rounded-xl border border-emerald-500/30"
+        <div class="p-4 bg-gray-900 rounded-xl border border-green-500 border-opacity-30"
              role="group"
              aria-label="Total daily emission">
-          <span class="text-xs font-bold uppercase tracking-widest text-emerald-400">
+          <span class="text-xs font-bold uppercase tracking-widest text-green-400">
             Total Calculation
           </span>
           <p class="text-2xl font-black text-white mt-1">
@@ -190,12 +189,12 @@
 
         <section aria-labelledby="insights-heading">
           <p id="insights-heading"
-             class="text-xs font-bold uppercase tracking-widest text-amber-400 mb-2">
+             class="text-xs font-bold uppercase tracking-widest text-yellow-400 mb-2">
             Personalised AI Insights:
           </p>
           <ul id="insights-list"
               aria-labelledby="insights-heading"
-              class="text-xs text-slate-300 list-disc list-inside space-y-1 bg-slate-900 p-3 rounded-lg border border-slate-700">
+              class="text-xs text-gray-300 list-disc list-inside space-y-1 bg-gray-900 p-3 rounded-lg border border-gray-700">
           </ul>
         </section>
 
@@ -204,16 +203,16 @@
     </main>
 
     <footer>
-      <div class="mt-8 pt-6 border-t border-slate-700 flex justify-between items-center text-xs text-slate-400 flex-wrap gap-2">
+      <div class="mt-8 pt-6 border-t border-gray-700 flex justify-between items-center text-xs text-gray-400 flex-wrap gap-2">
         <span>
           Branch status:
-          <strong class="text-emerald-400">main (Single Branch)</strong>
+          <strong class="text-green-400">main (Single Branch)</strong>
         </span>
         <a href="https://github.com/TejaDegala07/h2schallenge2"
            target="_blank"
            rel="noopener noreferrer"
            aria-label="View source code on GitHub (opens in a new tab)"
-           class="text-emerald-400 hover:underline font-semibold">
+           class="text-green-400 hover:underline font-semibold">
           View Source GitHub →
         </a>
       </div>
