@@ -1,10 +1,22 @@
 "use strict";
 
 (function () {
+  /**
+   * Distance threshold in kilometers used to provide specific insights.
+   * @constant {number}
+   */
+  const COMMUTE_THRESHOLD_KM = 10;
+
   // ─────────────────────────────────────────────────────────────────────────────
   // PURE MATH ENGINE
   // ─────────────────────────────────────────────────────────────────────────────
 
+  /**
+   * Calculates the total carbon emissions based on distance and transport coefficient.
+   * @param {number} distance - The total distance traveled in kilometers.
+   * @param {number} coefficient - The emission coefficient in kg CO2 per kilometer.
+   * @returns {number|null} The calculated emissions rounded to two decimal places, or null if invalid inputs.
+   */
   function calculateEmissions(distance, coefficient) {
     if (typeof distance !== "number" || typeof coefficient !== "number") {
       return null;
@@ -22,10 +34,16 @@
   // INSIGHTS BUILDER ENGINE
   // ─────────────────────────────────────────────────────────────────────────────
 
+  /**
+   * Builds an array of personalized, context-aware tips based on commute data.
+   * @param {string} type - The primary mode of transportation (e.g., "car", "bus", "bike").
+   * @param {number} distance - The daily distance traveled in kilometers.
+   * @returns {string[]} An array of insights/tips.
+   */
   function buildInsights(type, distance) {
     const tips = [];
 
-    if (type === "car" && distance > 10) {
+    if (type === "car" && distance > COMMUTE_THRESHOLD_KM) {
       tips.push("Your daily commute contributes a heavy carbon load. Switching to carpooling or public transport can cut emissions by roughly 60%.");
       tips.push("Smooth acceleration and cruise control can save up to 15% on fuel efficiency.");
     } else if (type === "bus") {
@@ -45,13 +63,22 @@
   // UI CONTROLLER FUNCTIONS
   // ─────────────────────────────────────────────────────────────────────────────
 
+  /**
+   * Handles the form submission event, orchestrates validation, calculation, and UI updates.
+   * @param {Event} event - The form submit event.
+   * @param {Object} elements - A map of cached DOM elements.
+   */
   function handleFormSubmit(event, elements) {
     event.preventDefault();
 
-    const selectedBtn = Array.from(elements.transportBtns).find(
-      (btn) => btn.getAttribute("aria-checked") === "true"
-    );
-    const selectedCoeff = selectedBtn ? parseFloat(selectedBtn.dataset.coeff) : null;
+    let selectedBtn = null;
+    for (const btn of elements.transportBtns) {
+      if (btn.getAttribute("aria-checked") === "true") {
+        selectedBtn = btn;
+        break;
+      }
+    }
+    const selectedCoeff = selectedBtn ? Number(selectedBtn.dataset.coeff) : null;
     const selectedType = selectedBtn ? selectedBtn.dataset.type : null;
 
     const isTransportValid = selectedCoeff !== null;
@@ -62,7 +89,7 @@
     }
 
     const rawDistance = elements.distanceInput.value.trim();
-    const distance = parseFloat(rawDistance);
+    const distance = Number(rawDistance);
     const isDistanceValid = rawDistance !== "" && !isNaN(distance) && distance >= 0;
 
     if (!isDistanceValid) {
@@ -87,12 +114,14 @@
     elements.emissionsOut.textContent = result.toFixed(2);
     elements.insightsList.replaceChildren();
     
+    const ownerDoc = elements.insightsList.ownerDocument || document;
+    const fragment = ownerDoc.createDocumentFragment();
     buildInsights(selectedType, distance).forEach((tip) => {
-      const ownerDoc = elements.insightsList.ownerDocument || document;
       const li = ownerDoc.createElement("li");
       li.textContent = tip;
-      elements.insightsList.appendChild(li);
+      fragment.appendChild(li);
     });
+    elements.insightsList.appendChild(fragment);
 
     elements.resultBox.classList.remove("hidden");
     elements.announcer.textContent = "Results updated. Your daily carbon footprint is " + result.toFixed(2) + " kilograms of CO2 equivalent.";
@@ -102,6 +131,9 @@
   // INITIALIZATION
   // ─────────────────────────────────────────────────────────────────────────────
 
+  /**
+   * Initializes the application, caches DOM elements, and sets up event delegation and listeners.
+   */
   function initializeApp() {
     const form = document.getElementById("footprint-form");
     if (!form) return;
