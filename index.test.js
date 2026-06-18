@@ -212,21 +212,21 @@ describe("DOM Initialization and App Lifecycle", () => {
     const bikeBtn = document.getElementById("btn-bike");
 
     // Press ArrowRight on the first button (car)
-    carBtn.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight" }));
+    carBtn.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowRight", bubbles: true }));
     expect(busBtn.getAttribute("aria-checked")).toBe("true");
     expect(carBtn.getAttribute("aria-checked")).toBe("false");
 
     // Press ArrowDown on the second button (bus)
-    busBtn.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown" }));
+    busBtn.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowDown", bubbles: true }));
     expect(bikeBtn.getAttribute("aria-checked")).toBe("true");
     expect(busBtn.getAttribute("aria-checked")).toBe("false");
 
     // Press ArrowLeft on the third button (bike)
-    bikeBtn.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft" }));
+    bikeBtn.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowLeft", bubbles: true }));
     expect(busBtn.getAttribute("aria-checked")).toBe("true");
 
     // Press ArrowUp on the second button (bus)
-    busBtn.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp" }));
+    busBtn.dispatchEvent(new KeyboardEvent("keydown", { key: "ArrowUp", bubbles: true }));
     expect(carBtn.getAttribute("aria-checked")).toBe("true");
   });
 });

@@ -72,9 +72,9 @@
     event.preventDefault();
 
     let selectedBtn = null;
-    for (const btn of elements.transportBtns) {
-      if (btn.getAttribute("aria-checked") === "true") {
-        selectedBtn = btn;
+    for (let i = 0; i < elements.transportBtns.length; i++) {
+      if (elements.transportBtns[i].getAttribute("aria-checked") === "true") {
+        selectedBtn = elements.transportBtns[i];
         break;
       }
     }
@@ -138,7 +138,8 @@
     const form = document.getElementById("footprint-form");
     if (!form) return;
 
-    const transportBtns = Array.from(document.querySelectorAll(".transport-btn"));
+    const transportSelector = document.getElementById("transport-selector");
+    const transportBtns = document.querySelectorAll(".transport-btn");
     const distanceInput = document.getElementById("distance-input");
     const resultBox = document.getElementById("result-box");
     const emissionsOut = document.getElementById("emissions-output");
@@ -159,36 +160,55 @@
       distanceErr,
     };
 
-    transportBtns.forEach((btn, index) => {
-      btn.addEventListener("click", () => {
-        transportBtns.forEach((b) => {
-          b.setAttribute("aria-checked", "false");
-          b.classList.remove("border-green-500", "bg-green-900", "bg-opacity-30", "text-green-400");
-          b.classList.add("border-gray-600", "bg-gray-900");
-        });
+    for (let i = 0; i < transportBtns.length; i++) {
+      transportBtns[i].setAttribute("tabindex", i === 0 ? "0" : "-1");
+    }
 
-        btn.setAttribute("aria-checked", "true");
-        btn.classList.remove("border-gray-600", "bg-gray-900");
-        btn.classList.add("border-green-500", "bg-green-900", "bg-opacity-30", "text-green-400");
+    transportSelector.addEventListener("click", (e) => {
+      const btn = e.target.closest(".transport-btn");
+      if (!btn) return;
 
-        transportErr.classList.add("hidden");
-        btn.focus();
-      });
+      for (let i = 0; i < transportBtns.length; i++) {
+        const b = transportBtns[i];
+        b.setAttribute("aria-checked", "false");
+        b.setAttribute("tabindex", "-1");
+        b.classList.remove("border-green-500", "bg-green-900", "bg-opacity-30", "text-green-400");
+        b.classList.add("border-gray-600", "bg-gray-900");
+      }
 
-      btn.addEventListener("keydown", (e) => {
-        if (e.key === " " || e.key === "Enter") {
-          e.preventDefault();
-          btn.click();
-        } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
-          e.preventDefault();
-          const nextIndex = (index + 1) % transportBtns.length;
-          transportBtns[nextIndex].click();
-        } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
-          e.preventDefault();
-          const prevIndex = (index - 1 + transportBtns.length) % transportBtns.length;
-          transportBtns[prevIndex].click();
+      btn.setAttribute("aria-checked", "true");
+      btn.setAttribute("tabindex", "0");
+      btn.classList.remove("border-gray-600", "bg-gray-900");
+      btn.classList.add("border-green-500", "bg-green-900", "bg-opacity-30", "text-green-400");
+
+      transportErr.classList.add("hidden");
+      btn.focus();
+    });
+
+    transportSelector.addEventListener("keydown", (e) => {
+      const btn = e.target.closest(".transport-btn");
+      if (!btn) return;
+
+      let index = -1;
+      for (let i = 0; i < transportBtns.length; i++) {
+        if (transportBtns[i] === btn) {
+          index = i;
+          break;
         }
-      });
+      }
+
+      if (e.key === " " || e.key === "Enter") {
+        e.preventDefault();
+        btn.click();
+      } else if (e.key === "ArrowRight" || e.key === "ArrowDown") {
+        e.preventDefault();
+        const nextIndex = (index + 1) % transportBtns.length;
+        transportBtns[nextIndex].click();
+      } else if (e.key === "ArrowLeft" || e.key === "ArrowUp") {
+        e.preventDefault();
+        const prevIndex = (index - 1 + transportBtns.length) % transportBtns.length;
+        transportBtns[prevIndex].click();
+      }
     });
 
     form.addEventListener("submit", (e) => {
